@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-
+using System.Numerics;
 
 namespace _06.JaggedArrayManipulator
 {
@@ -9,12 +9,12 @@ namespace _06.JaggedArrayManipulator
         static void Main(string[] args)
         {
             int n = int.Parse(Console.ReadLine());
-            long[][] jagged = new long[n][];
+            double[][] jagged = new double[n][];
             for (int row = 0; row < n; row++)
             {
-                long[] rows = Console.ReadLine()
+                double[] rows = Console.ReadLine()
                     .Split(" ", StringSplitOptions.RemoveEmptyEntries)
-                    .Select(long.Parse)
+                    .Select(double.Parse)
                     .ToArray();
 
                 jagged[row] = rows;
@@ -32,24 +32,13 @@ namespace _06.JaggedArrayManipulator
                 }
                 else
                 {
-                    for (int i = 0; i < Math.Max(jagged[row].Length, jagged[row + 1].Length); i++)
+                    for (int i = 0; i <jagged[row].Length; i++)
+                    {  
+                            jagged[row][i] /= 2; 
+                    }
+                    for (int i = 0; i < jagged[row+1].Length; i++)
                     {
-                        if (Math.Min(jagged[row].Length, jagged[row + 1].Length) > i)
-                        {
-                            jagged[row][i] /= 2;
-                            jagged[row + 1][i] /= 2;
-                        }
-                        else
-                        {
-                            if (jagged[row].Length > jagged[row + 1].Length)
-                            {
-                                jagged[row][i] /= 2;
-                            }
-                            else
-                            {
-                                jagged[row + 1][i] /= 2;
-                            }
-                        }
+                        jagged[row + 1][i] /= 2;
                     }
                 }
             }
@@ -62,7 +51,7 @@ namespace _06.JaggedArrayManipulator
                 
                 int row = int.Parse(tokens[1]);
                 int col = int.Parse(tokens[2]);
-                long value = int.Parse(tokens[3]);
+                double value = double.Parse(tokens[3]);
                 if (row >= 0 && row < n && col >= 0 && col < jagged[row].Length)
                 {
                     if (tokens[0].ToLower() == "add")
