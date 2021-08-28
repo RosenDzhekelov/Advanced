@@ -30,132 +30,95 @@ namespace _10.RadioactiveVampireMutant
                 }
             }
             string command = Console.ReadLine().ToUpper();
-
+            bool isWon = false;
             for (int i = 0; i < command.Length; i++)
             {
+                BunnySpread(matrix);
                 if (command[i] == 'U')
                 {
                     if (currentRow - 1 < 0)
                     {
-                        BunnySpread(matrix,sizes);
-                        PrintMatrix(matrix);
-                        Console.WriteLine($"won: {currentRow} {currentCol}");
+                        isWon = true;
                         break;
                     }
-                    else
-                    {
-                        currentRow--;
-                        BunnySpread(matrix,sizes);
-                        PrintMatrix(matrix);
-                        if (matrix[currentRow, currentCol] == 'B')
-                        {
-                            PrintMatrix(matrix);
-                            Console.WriteLine($"dead: {currentRow} {currentCol}");
-                            break;
-                        }
-                    }
+                    currentRow--;
                 }
                 else if (command[i] == 'D')
                 {
-                    if (currentRow + 1 >=sizes[0])
+
+                    if (currentRow + 1 >= sizes[0])
                     {
-                        BunnySpread(matrix, sizes);
-                        PrintMatrix(matrix);
-                        Console.WriteLine($"won: {currentRow} {currentCol}");
+                        isWon = true;
                         break;
                     }
-                    else
-                    {
-                        currentRow++;
-                        BunnySpread(matrix, sizes);
-                        if (matrix[currentRow, currentCol] == 'B')
-                        {
-                            PrintMatrix(matrix);
-                            Console.WriteLine($"dead: {currentRow} {currentCol}");
-                            break;
-                        }
-                    }
+                    currentRow++;
                 }
                 else if (command[i] == 'R')
                 {
                     if (currentCol + 1 >= sizes[1])
                     {
-                        BunnySpread(matrix, sizes);
-                        PrintMatrix(matrix);
-                        Console.WriteLine($"won: {currentRow} {currentCol}");
+                        isWon = true;
                         break;
                     }
-                    else
-                    {
-                        currentCol++;
-                        BunnySpread(matrix, sizes);
-                        if (matrix[currentRow, currentCol] == 'B')
-                        {
-                            PrintMatrix(matrix);
-                            Console.WriteLine($"dead: {currentRow} {currentCol}");
-                            break  ;
-                        }
-                    }
+                    currentCol++;
                 }
                 else if (command[i] == 'L')
                 {
-                    if (currentCol - 1 <0)
+                    if (currentCol - 1 < 0)
                     {
-                        BunnySpread(matrix, sizes);
-                        PrintMatrix(matrix);
-                        Console.WriteLine($"won: {currentRow} {currentCol}");
+                        isWon = true;
                         break;
                     }
-                    else
-                    {
-                        currentCol--;
-                        BunnySpread(matrix, sizes); 
-                        PrintMatrix(matrix);
-                        if (matrix[currentRow, currentCol] == 'B')
-                        {
-                            PrintMatrix(matrix);
-                            Console.WriteLine($"dead: {currentRow} {currentCol}");
-                            break;
-                        }
-                    }
+                    currentCol--;
                 }
-            }
+                if (matrix[currentRow, currentCol] == 'B')
+                {
+                    PrintMatrix(matrix);
+                    Console.WriteLine($"dead: {currentRow} {currentCol}");
+                    break;
+                }
 
+            }
+            if (isWon)
+            {
+                PrintMatrix(matrix);
+                Console.WriteLine($"won: {currentRow} {currentCol}");
+            }
 
         }
 
-        private static void BunnySpread(char[,] matrix, int[] sizes)
+        private static void BunnySpread(char[,] matrix)
         {
-            for (int row = 0; row < sizes[0]; row++)
+            for (int row = 0; row < matrix.GetLength(0); row++)
             {
-                for (int col = 0; col < sizes[1]; col++)
+                for (int col = 0; col < matrix.GetLength(1); col++)
                 {
                     if (matrix[row, col] == 'B')
                     {
-                        if (row - 1 >= 0)
+                        if (row - 1 >= 0 && matrix[row - 1, col] != 'B')
                         {
                             matrix[row - 1, col] = '*';
                         }
-                        if (row + 1 < sizes[0])
+                        if (row + 1 < matrix.GetLength(0) && matrix[row + 1, col] != 'B')
                         {
                             matrix[row + 1, col] = '*';
                         }
-                        if (col - 1 >= 0)
+                        if (col - 1 >= 0 && matrix[row, col - 1] != 'B')
                         {
                             matrix[row, col - 1] = '*';
                         }
-                        if (col + 1 < sizes[1])
+                        if (col + 1 < matrix.GetLength(1) && matrix[row, col + 1] != 'B')
                         {
                             matrix[row, col + 1] = '*';
                         }
                     }
                 }
             }
-            for (int row = 0; row <sizes[0]; row++)
+            for (int row = 0; row < matrix.GetLength(0); row++)
             {
-                for (int col = 0; col < sizes[1]; col++)
+                for (int col = 0; col < matrix.GetLength(1); col++)
                 {
-                    if(matrix[row,col]=='*')
+                    if (matrix[row, col] == '*')
                     {
                         matrix[row, col] = 'B';
                     }
