@@ -47,7 +47,7 @@ namespace CarManufacturer
         {
             if (distance * FuelConsumption - FuelQuantity > 0)
             {
-                FuelQuantity -= distance * FuelConsumption;
+                FuelQuantity -= distance/100 * FuelConsumption;
             }
             else
             {
@@ -57,7 +57,8 @@ namespace CarManufacturer
         public string WhoAmI()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append($"Make: {Make}\nModel: {Model}\nYear {Year}\nFuel: {FuelQuantity}");
+            sb.Append($"Make: {Make}\nModel: {Model}\nYear: {Year}\nHorsePowers: " +
+                    $"{Engine.HorsePower}\nFuelQuantity: {FuelQuantity}");
             return sb.ToString();
             
         }
